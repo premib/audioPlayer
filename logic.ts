@@ -60,7 +60,7 @@ window.onload= ()=>{
     headDiv.className= "container-fluid";
     headDiv.style.background= "#1a1a1d";
     titleDiv.className= "text-center"
-    titleDiv.innerHTML= '<h1>Audiance</h1><p>The Dupaakoor AudioBook</p>'
+    titleDiv.innerHTML= '<h1>Audiance</h1><p>Another AudioBook</p>'
     titleDiv.style.color= "white";
     headDiv.appendChild(titleDiv);
     document.body.appendChild(headDiv);
