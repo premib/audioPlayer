@@ -113,7 +113,20 @@
 }
 
 .wrapper .audioplayer #play_list> .container-fluid{
-    background: #998b91;
+    background: #7c6466;
     margin-top: 5px;
+}
+.wrapper .audioplayer #play_list> .container-fluid >label{
+    font-weight: bold; 
+    font: 2em sans-serif;
+    position: relative;
+    bottom: 10px;
+    left: 10px;
+}
 
+.wrapper .audioplayer #play_list> .container-fluid > audio{
+    position: relative;
+    left: 50px;
+    top: 5px;
+    width: 1000px;
 }
