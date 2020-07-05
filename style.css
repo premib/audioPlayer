@@ -112,6 +112,8 @@
     height: 100%;
 }
 
-.wrapper .audioplayer .play_list .container_fluid{
+.wrapper .audioplayer #play_list> .container-fluid{
     background: #998b91;
+    margin-top: 5px;
+
 }

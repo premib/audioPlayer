@@ -60,7 +60,7 @@ window.onload= ()=>{
     headDiv.className= "container-fluid";
     headDiv.style.background= "#1a1a1d";
     titleDiv.className= "text-center"
-    titleDiv.innerHTML= '<h1>Audiance</h1><p>Another AudioBook</p>'
+    titleDiv.innerHTML= '<h1>Audiance</h1><p>Web pages that needs audio files</p>'
     titleDiv.style.color= "white";
     headDiv.appendChild(titleDiv);
     document.body.appendChild(headDiv);
@@ -182,7 +182,7 @@ add_audio= ()=> {
         let e: HTMLSelectElement = <HTMLSelectElement>document.getElementById('user-select');
         let currentUser: string= e.options[e.selectedIndex].value
         let mpInstance= getInstance(currentUser)
-        let newAudio= new AudioFile("Audio"+commonIter, addUrlInput.value)
+        let newAudio= new AudioFile("Audio"+(commonIter++), addUrlInput.value)
         mpInstance.audioList.push(newAudio);
         changed= true;
         MusicPlayer.addToShareSpace(newAudio);

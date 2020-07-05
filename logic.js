@@ -51,7 +51,7 @@ window.onload = function () {
     headDiv.className = "container-fluid";
     headDiv.style.background = "#1a1a1d";
     titleDiv.className = "text-center";
-    titleDiv.innerHTML = '<h1>Audiance</h1><p>Another AudioBook</p>';
+    titleDiv.innerHTML = '<h1>Audiance</h1><p>Web pages that needs audio files</p>';
     titleDiv.style.color = "white";
     headDiv.appendChild(titleDiv);
     document.body.appendChild(headDiv);
@@ -164,7 +164,7 @@ add_audio = function () {
         var e = document.getElementById('user-select');
         var currentUser = e.options[e.selectedIndex].value;
         var mpInstance = getInstance(currentUser);
-        var newAudio = new AudioFile("Audio" + commonIter, addUrlInput.value);
+        var newAudio = new AudioFile("Audio" + (commonIter++), addUrlInput.value);
         mpInstance.audioList.push(newAudio);
         changed = true;
         MusicPlayer.addToShareSpace(newAudio);
