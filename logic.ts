@@ -46,6 +46,7 @@ let leftDivList: HTMLUListElement= document.createElement('ul');
 let windows: Array<string> = ["play_list", "common_space", "add_audio"] 
 let anothList: HTMLLIElement= document.createElement('li');
 let userSelect: HTMLSelectElement= document.createElement('select');
+let shareDiv: HTMLDivElement= document.createElement('div');
 let add_audio: Function;
 let play_list: Function;
 
@@ -84,7 +85,14 @@ window.onload= ()=>{
         document.getElementById('play_list').style.display= 'none';
     },100);
 
+    create_sharespace();
+    setTimeout(()=>{
+        document.getElementById('sharespace').style.display= 'none';
+    },100);
+    
     //play
+
+
     userSelect.id= "user-select";
     allUser.forEach(element => {
         let options: HTMLOptionElement= document.createElement('option');
@@ -102,10 +110,7 @@ window.onload= ()=>{
         anchor.id= "a-"+element.toString();
         anchor.href= "#";
         lists.append(anchor);
-        leftDivList.append(lists);
-        // anchor.addEventListener('click',()=>{
-            
-        // })
+        leftDivList.append(lists); 
     });
     leftDiv.append(leftDivList);
 
@@ -114,10 +119,12 @@ window.onload= ()=>{
     
     document.getElementById('a-add_audio').onclick= ()=> {
         document.getElementById('play_list').style.display= "none"
+        document.getElementById('sharespace').style.display= "none"
         document.getElementById('add_audio').style.display= "block";
     }
     document.getElementById('a-play_list').onclick= ()=> {
         document.getElementById('add_audio').style.display= "none"
+        document.getElementById('sharespace').style.display= "none"
         let e: HTMLSelectElement = <HTMLSelectElement>document.getElementById('user-select');
         let currentUser: string= e.options[e.selectedIndex].value;
         for(let temp of allUser){
@@ -134,6 +141,16 @@ window.onload= ()=>{
                 removeAudioFiles(mpInstance);
             }
         } 
+    }
+    document.getElementById('a-common_space').onclick= ()=> {
+        let e: HTMLSelectElement = <HTMLSelectElement>document.getElementById('user-select');
+        let currentUser: string= e.options[e.selectedIndex].value;
+
+        let mpInstance: MusicPlayer= getInstance(currentUser);
+        createSharedAudio(mpInstance);
+        document.getElementById('add_audio').style.display= "none";
+        document.getElementById('play_list').style.display= "none";
+        document.getElementById('sharespace').style.display= "block";
     }
     
   
@@ -162,7 +179,6 @@ add_audio= ()=> {
     audioPlayer.controls= true;
     audioPlayer.id= "audio-control"
     addUrlInput.className= 'form-control';
-    // addUrlInput.value= "https://freesound.org/data/previews/524/524920_11641696-lq.mp3";
     addUrlInput.placeholder= "       Enter Audio URL here";
     addUrlInput.type= 'text';
     playUrlButton.id= "addUrlb1"
@@ -198,18 +214,71 @@ add_audio= ()=> {
     addUrlDiv.appendChild(addUrlForm);
     //***********************************************************************************************************************//
     content.append(addUrlDiv);
-    content.append(playListDiv);
+
 
 }
+
+let create_sharespace= ()=>{
+    shareDiv.id= "sharespace";
+    let shareSpaceH2: HTMLHeadingElement= document.createElement('h2');
+    shareSpaceH2.innerText= "SHARE SPACE";
+    shareDiv.append(shareSpaceH2);
+    content.append(shareDiv);    
+}
+
+
+let createSharedAudio= (user: MusicPlayer): void=> {
+    let audioFileDiv: HTMLDivElement;
+    let ratingSelect: HTMLSelectElement;
+    for(let iter= 0; iter< MusicPlayer.shareSpace.length; iter++){
+        audioFileDiv= document.createElement('div');
+        audioFileDiv.id= user.userName+"shared"+iter;
+        let audioFileLabel: HTMLLabelElement= document.createElement('label');
+        audioFileLabel.innerText= MusicPlayer.shareSpace[iter].name;
+        let audioFile: HTMLAudioElement= document.createElement('audio');
+        audioFile.controls= true;
+        audioFile.src= MusicPlayer.shareSpace[iter].url;
+        audioFileDiv.append(audioFileLabel);
+        audioFileDiv.append(audioFile);
+        ratingSelect= document.createElement('select')
+        ratingSelect.id= user.userName+"sharedselect"+iter;
+        let opt1: HTMLOptionElement= document.createElement('option');
+        opt1.text= "1";
+        opt1.value= "1"; 
+        let opt2: HTMLOptionElement= document.createElement('option');
+        opt2 .text= "2";
+        opt2.value= "2"; 
+        let opt3: HTMLOptionElement= document.createElement('option');
+        opt3.text= "3";
+        opt3.value= "3"; 
+        let opt4: HTMLOptionElement= document.createElement('option');
+        opt4.text= "4";
+        opt4.value= "4"; 
+        let opt5: HTMLOptionElement= document.createElement('option');
+        opt5.text= "5";
+        opt5.value= "5"; 
+        ratingSelect.add(opt1, null)
+        ratingSelect.add(opt2, null)
+        ratingSelect.add(opt3, null)
+        ratingSelect.add(opt4, null)
+        ratingSelect.add(opt5, null)
+        audioFileDiv.append(ratingSelect)
+    }
+    audioFileDiv.className= "container-fluid"    
+    playListDiv.append(audioFileDiv);
+}   
 
 let create_play_list= ()=>{
     playListDiv.id= "play_list";
     let playListH2: HTMLHeadingElement= document.createElement('h2');
     playListH2.innerText= "Your Playlist";
     playListDiv.append(playListH2);
+    content.append(playListDiv);
 }
+
 let createAudioList= (user: MusicPlayer): void=> {
     let audioFileDiv: HTMLDivElement;
+    let ratingSelect: HTMLSelectElement;
     for(let iter= 0; iter< user.audioList.length; iter++){
         audioFileDiv= document.createElement('div');
         audioFileDiv.id= user.userName+iter;
@@ -220,12 +289,36 @@ let createAudioList= (user: MusicPlayer): void=> {
         audioFile.src= user.audioList[iter].url;
         audioFileDiv.append(audioFileLabel);
         audioFileDiv.append(audioFile);
+        ratingSelect= document.createElement('select')
+        ratingSelect.id= user.userName+"select"+iter;
+        let opt1: HTMLOptionElement= document.createElement('option');
+        opt1.text= "1";
+        opt1.value= "1"; 
+        let opt2: HTMLOptionElement= document.createElement('option');
+        opt2 .text= "2";
+        opt2.value= "2"; 
+        let opt3: HTMLOptionElement= document.createElement('option');
+        opt3.text= "3";
+        opt3.value= "3"; 
+        let opt4: HTMLOptionElement= document.createElement('option');
+        opt4.text= "4";
+        opt4.value= "4"; 
+        let opt5: HTMLOptionElement= document.createElement('option');
+        opt5.text= "5";
+        opt5.value= "5"; 
+        ratingSelect.add(opt1, null)
+        ratingSelect.add(opt2, null)
+        ratingSelect.add(opt3, null)
+        ratingSelect.add(opt4, null)
+        ratingSelect.add(opt5, null)
+        audioFileDiv.append(ratingSelect)
     }
     audioFileDiv.className= "container-fluid"    
     playListDiv.append(audioFileDiv);
 }   
 
 let removeAudioFiles= (user: MusicPlayer): void=>{
+    console.log(user.userName)
     for(let iter= 0; iter< user.audioList.length; iter++){
         let tempHTMLElement: HTMLDivElement= <HTMLDivElement>document.getElementById(user.userName.toString()+iter);
         tempHTMLElement.parentNode.removeChild(tempHTMLElement);

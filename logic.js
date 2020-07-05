@@ -36,6 +36,7 @@ var leftDivList = document.createElement('ul');
 var windows = ["play_list", "common_space", "add_audio"];
 var anothList = document.createElement('li');
 var userSelect = document.createElement('select');
+var shareDiv = document.createElement('div');
 var add_audio;
 var play_list;
 var getInstance = function (str) {
@@ -70,6 +71,10 @@ window.onload = function () {
     setTimeout(function () {
         document.getElementById('play_list').style.display = 'none';
     }, 100);
+    create_sharespace();
+    setTimeout(function () {
+        document.getElementById('sharespace').style.display = 'none';
+    }, 100);
     //play
     userSelect.id = "user-select";
     allUser.forEach(function (element) {
@@ -89,18 +94,18 @@ window.onload = function () {
         anchor.href = "#";
         lists.append(anchor);
         leftDivList.append(lists);
-        // anchor.addEventListener('click',()=>{
-        // })
     });
     leftDiv.append(leftDivList);
     divMain.append(content);
     document.body.appendChild(divMain);
     document.getElementById('a-add_audio').onclick = function () {
         document.getElementById('play_list').style.display = "none";
+        document.getElementById('sharespace').style.display = "none";
         document.getElementById('add_audio').style.display = "block";
     };
     document.getElementById('a-play_list').onclick = function () {
         document.getElementById('add_audio').style.display = "none";
+        document.getElementById('sharespace').style.display = "none";
         var e = document.getElementById('user-select');
         var currentUser = e.options[e.selectedIndex].value;
         var _loop_1 = function (temp) {
@@ -121,6 +126,15 @@ window.onload = function () {
             var temp = allUser_1[_i];
             _loop_1(temp);
         }
+    };
+    document.getElementById('a-common_space').onclick = function () {
+        var e = document.getElementById('user-select');
+        var currentUser = e.options[e.selectedIndex].value;
+        var mpInstance = getInstance(currentUser);
+        createSharedAudio(mpInstance);
+        document.getElementById('add_audio').style.display = "none";
+        document.getElementById('play_list').style.display = "none";
+        document.getElementById('sharespace').style.display = "block";
     };
 };
 var addUrlDiv = document.createElement('div');
@@ -177,16 +191,64 @@ add_audio = function () {
     addUrlDiv.appendChild(addUrlForm);
     //***********************************************************************************************************************//
     content.append(addUrlDiv);
-    content.append(playListDiv);
+};
+var create_sharespace = function () {
+    shareDiv.id = "sharespace";
+    var shareSpaceH2 = document.createElement('h2');
+    shareSpaceH2.innerText = "SHARE SPACE";
+    shareDiv.append(shareSpaceH2);
+    content.append(shareDiv);
+};
+var createSharedAudio = function (user) {
+    var audioFileDiv;
+    var ratingSelect;
+    for (var iter = 0; iter < MusicPlayer.shareSpace.length; iter++) {
+        audioFileDiv = document.createElement('div');
+        audioFileDiv.id = user.userName + "shared" + iter;
+        var audioFileLabel = document.createElement('label');
+        audioFileLabel.innerText = MusicPlayer.shareSpace[iter].name;
+        var audioFile = document.createElement('audio');
+        audioFile.controls = true;
+        audioFile.src = MusicPlayer.shareSpace[iter].url;
+        audioFileDiv.append(audioFileLabel);
+        audioFileDiv.append(audioFile);
+        ratingSelect = document.createElement('select');
+        ratingSelect.id = user.userName + "sharedselect" + iter;
+        var opt1 = document.createElement('option');
+        opt1.text = "1";
+        opt1.value = "1";
+        var opt2 = document.createElement('option');
+        opt2.text = "2";
+        opt2.value = "2";
+        var opt3 = document.createElement('option');
+        opt3.text = "3";
+        opt3.value = "3";
+        var opt4 = document.createElement('option');
+        opt4.text = "4";
+        opt4.value = "4";
+        var opt5 = document.createElement('option');
+        opt5.text = "5";
+        opt5.value = "5";
+        ratingSelect.add(opt1, null);
+        ratingSelect.add(opt2, null);
+        ratingSelect.add(opt3, null);
+        ratingSelect.add(opt4, null);
+        ratingSelect.add(opt5, null);
+        audioFileDiv.append(ratingSelect);
+    }
+    audioFileDiv.className = "container-fluid";
+    playListDiv.append(audioFileDiv);
 };
 var create_play_list = function () {
     playListDiv.id = "play_list";
     var playListH2 = document.createElement('h2');
     playListH2.innerText = "Your Playlist";
     playListDiv.append(playListH2);
+    content.append(playListDiv);
 };
 var createAudioList = function (user) {
     var audioFileDiv;
+    var ratingSelect;
     for (var iter = 0; iter < user.audioList.length; iter++) {
         audioFileDiv = document.createElement('div');
         audioFileDiv.id = user.userName + iter;
@@ -197,11 +259,35 @@ var createAudioList = function (user) {
         audioFile.src = user.audioList[iter].url;
         audioFileDiv.append(audioFileLabel);
         audioFileDiv.append(audioFile);
+        ratingSelect = document.createElement('select');
+        ratingSelect.id = user.userName + "select" + iter;
+        var opt1 = document.createElement('option');
+        opt1.text = "1";
+        opt1.value = "1";
+        var opt2 = document.createElement('option');
+        opt2.text = "2";
+        opt2.value = "2";
+        var opt3 = document.createElement('option');
+        opt3.text = "3";
+        opt3.value = "3";
+        var opt4 = document.createElement('option');
+        opt4.text = "4";
+        opt4.value = "4";
+        var opt5 = document.createElement('option');
+        opt5.text = "5";
+        opt5.value = "5";
+        ratingSelect.add(opt1, null);
+        ratingSelect.add(opt2, null);
+        ratingSelect.add(opt3, null);
+        ratingSelect.add(opt4, null);
+        ratingSelect.add(opt5, null);
+        audioFileDiv.append(ratingSelect);
     }
     audioFileDiv.className = "container-fluid";
     playListDiv.append(audioFileDiv);
 };
 var removeAudioFiles = function (user) {
+    console.log(user.userName);
     for (var iter = 0; iter < user.audioList.length; iter++) {
         var tempHTMLElement = document.getElementById(user.userName.toString() + iter);
         tempHTMLElement.parentNode.removeChild(tempHTMLElement);

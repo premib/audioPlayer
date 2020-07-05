@@ -130,3 +130,43 @@
     top: 5px;
     width: 1000px;
 }
+
+.wrapper .audioplayer #play_list> .container-fluid > select{
+    width: 5%;
+    background: #1a1a1d;
+    height: 30px;
+    display: inline-block;
+    color: white;
+    position: relative;
+    left: 90px;
+    bottom: 15px;
+}
+.wrapper .audioplayer #sharespace> .container-fluid{
+    background: #7c6466;
+    margin-top: 5px;
+}
+.wrapper .audioplayer #sharespace> .container-fluid >label{
+    font-weight: bold; 
+    font: 2em sans-serif;
+    position: relative;
+    bottom: 10px;
+    left: 10px;
+}
+
+.wrapper .audioplayer #sharespace> .container-fluid > audio{
+    position: relative;
+    left: 50px;
+    top: 5px;
+    width: 1000px;
+}
+
+.wrapper .audioplayer #sharespace> .container-fluid > select{
+    width: 5%;
+    background: #1a1a1d;
+    height: 30px;
+    display: inline-block;
+    color: white;
+    position: relative;
+    left: 90px;
+    bottom: 15px;
+}
